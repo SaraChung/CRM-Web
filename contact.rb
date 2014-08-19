@@ -6,6 +6,5 @@ class Contact
 		@last_name = last_name
 		@email = email
 		@notes = notes
-		@ID = ID
 	end
 end
