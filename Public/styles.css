@@ -1,0 +1,51 @@
+div {
+	width: 250px;
+	padding: 10px;
+	border: 5px solid gray;
+	margin: 10px;
+}
+
+element.style {
+	background: turquoise;
+	font-family: serif;
+}
+
+body {
+	display: inline-block;
+	margin: 20px;
+	border-color: darksalmon
+	background: turquoise;
+}
+
+title {
+	color: blue;
+	size: 40px;
+	text-align: center;
+}
+
+h1 {
+	color: darkviolet;
+	font: cursive;
+	display: inline;
+}
+
+p {
+	text-align: center;
+	font-size: x-large;
+	color: slateblue;
+}
+
+form {
+	margin-top: inherit;
+	display: table-caption;
+}
+
+li {
+	font-size: large;
+}
+
+input {
+	border: 2px solid darksalmon;
+	padding: 10px 50px 5px;
+	font-size: medium
+}

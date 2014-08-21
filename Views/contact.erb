@@ -2,8 +2,12 @@
 
 <ul>
 <% @@rolodex.contacts.each do |contact| %>
-  <li><%= contact.first_name %> <%= contact.last_name %></li>
+  <li> <a href="<%= '/contact/' + contact.id.to_s %>"><%= contact.first_name %></a></li>
 <% end %>
 </ul>
 
-# no = means run ruby, = means show this on the screen
+
+ 
+
+
+<!-- no = means run ruby, = means show this on the screen -->
