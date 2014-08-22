@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'data_mapper'
 
-DataMapper.setup(:default, 'sqlite3:database.sqlite3')
+DataMapper.setup(:default, "sqlite3:database.sqlite3")
 
 class Contact
   include DataMapper::Resource
@@ -54,12 +54,14 @@ get "/contact/:id" do
 end
 
 put "/contact/:id" do
-  @contact = @@rolodex.find(params[:id].to_i)
+  @contact = Contact.get(params[:id].to_i) #?
   if @contact
     @contact.first_name = params[:first_name]
     @contact.last_name = params[:last_name]
     @contact.email = params[:email]
     @contact.notes = params[:notes]
+
+    @contact.save
 
     redirect to("/contact")		
   else
@@ -68,7 +70,7 @@ put "/contact/:id" do
 end
 
 get "/contact/:id/edit" do
-	@contact = @@rolodex.find(params[:id].to_i)
+	@contact = Contact.get(params[:id].to_i)
 	if @contact
 		erb :edit_contact
 	else
@@ -77,9 +79,9 @@ get "/contact/:id/edit" do
 end
 
 delete "/contact/:id" do
-  @contact = @@rolodex.find(params[:id].to_i)
+  @contact = Contact.get(params[:id].to_i)
   if @contact
-    @@rolodex.remove_contact(@contact)
+    @contact.destroy
     redirect to("/contact")
   else
     raise Sinatra::NotFound
