@@ -1,18 +1,29 @@
-require_relative 'contact'
-require_relative 'rolodex'
 require 'sinatra'
+require 'data_mapper'
 
-@@rolodex = Rolodex.new
+DataMapper.setup(:default, 'sqlite3:database.sqlite3')
 
-@@rolodex.add_contact(Contact.new("Stefanie", "Gibson", "s@bitmakerlabs.com", "Rockstar"))
-@@rolodex.add_contact(Contact.new("Donna", "Ha", "d@bitmakerlabs.com", "Rockstar"))
+class Contact
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :first_name, String
+  property :last_name, String
+  property :email, String
+  property :notes, String
+
+end
+
+DataMapper.finalize
+DataMapper.auto_upgrade!
 
 get '/' do
 	@crm_app_name = "Sara's CRM"
-	erb :index		# localhost:4567/index
+	erb :index		
 end
 
 get "/contact" do
+  @contacts = Contact.all
   erb :contact
 end
 
@@ -20,19 +31,21 @@ get "/index" do
 	erb :index
 end
 
-# add new contact
 get "/contact/new" do
 	erb :new_contact
 end
 
 post '/contact' do
-  new_contact = Contact.new(params[:first_name], params[:last_name], params[:email], params[:notes])
-  @@rolodex.add_contact(new_contact)
-  redirect to('/contact')		
+  contact = Contact.create(
+      :first_name =>params[:first_name],
+      :last_name =>params[:last_name],
+      :email =>params[:email],
+      :notes =>params[:notes]
+    )
 end
 
 get "/contact/:id" do
-	@contact = @@rolodex.find(params[:id].to_i)
+  @contact = Contact.get(params[:id].to_i)
 	if @contact
 		erb :show_contact
 	else
@@ -48,7 +61,7 @@ put "/contact/:id" do
     @contact.email = params[:email]
     @contact.notes = params[:notes]
 
-    redirect to("/contact")		# redirect is always a get req
+    redirect to("/contact")		
   else
     raise Sinatra::NotFound
   end
